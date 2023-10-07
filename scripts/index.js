@@ -15,7 +15,7 @@ function copyLink() {
 }
 
 function transferToGithub() {
-  window.location.href = "https://github.com/q0r3y/ShrinkNinja";
+  window.location.href = "https://github.com/q0r3y/shrink.ninja";
 }
 
 function setColors() {
@@ -84,21 +84,24 @@ async function requestCode() {
   if (inputData) {
     inputData = checkForProtocol(inputData);
     const longUrlJson = JSON.stringify({ longUrl: inputData });
-    const newShortLink = await fetch("https://shrink.ninja/api", {
-      method: "POST",
-      body: longUrlJson,
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
-    });
+    const newShortLink = await fetch(
+      "https://us-central1-shrinkninja2.cloudfunctions.net/shortenUrl ",
+      {
+        method: "POST",
+        body: longUrlJson,
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+      }
+    );
 
     const data = await newShortLink.json();
 
     if (!data.errors) {
       $instText.style.display = "none";
       $copyText.style.display = "block";
-      $linkText.innerText = data.longUrl || data.shortUrl;
+      $linkText.innerText = data.shortUrl;
       $linkText.style.display = "block";
       createQrCode(data.shortUrl);
       $qrCode.style.display = "block";
