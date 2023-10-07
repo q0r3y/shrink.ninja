@@ -58,21 +58,16 @@ body {
     animation: fadeOut ease 2s;
     animation-fill-mode: forwards;
   }
+  .loading-animation {
+    animation: rotate 1s linear infinite;
+  }
   @keyframes rotate {
-    from {
-      transform: rotate(0deg);
-    }
-    to {
-      transform: rotate(360deg);
-    }
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
   }
   @keyframes fadeOut {
-    0% {
-      opacity: 1;
-    }
-    100% {
-      opacity: 0;
-    }
+    0% { opacity: 1; }
+    100% { opacity: 0; }
   }
   @media only screen and (max-width: 1180px) {
     #copy {

@@ -64,7 +64,9 @@ async function requestCode() {
   const $copyText = document.getElementById("copy");
   const $instText = document.getElementById("instructions");
   const $qrCode = document.getElementById("qrcode");
+  const $shuriken = document.getElementById("shurikenSvg");
   let inputData = window.location.href.slice(window.location.origin.length + 1);
+  $shuriken.classList.add("loading-animation");
 
   try {
     if (inputData && isValidHttpUrl(inputData)) {
@@ -89,6 +91,7 @@ async function requestCode() {
           $linkText.style.display = "block";
           createQrCode(data.shortUrl);
           $qrCode.style.display = "block";
+          $shuriken.classList.remove("loading-animation");
           return;
         }
       }
@@ -98,6 +101,7 @@ async function requestCode() {
   }
 
   $instText.style.display = "block";
+  $shuriken.classList.remove("loading-animation");
 
   function createQrCode(website) {
     window.qrCode = new QRious({
@@ -118,4 +122,8 @@ async function requestCode() {
     }
     return url.protocol === "http:" || url.protocol === "https:";
   }
+
+  function startAnimation() {}
+
+  function stopAnimation() {}
 }
