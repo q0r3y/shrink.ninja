@@ -31,7 +31,7 @@ body {
     filter: invert(100%);
   }
   #instructions {
-    display: block;
+    display: none;
     font-size: 2em;
     filter: invert(100%);
     max-width: 80%;

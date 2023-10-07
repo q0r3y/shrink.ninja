@@ -1,6 +1,6 @@
 function copyLink() {
   let $shortLink = document.getElementById("link").innerText;
-  if ($shortLink.length <= 12) $shortLink = "https://" + $shortLink;
+  if ($shortLink.length <= 12) $shortLink = `https://${$shortLink}`;
   navigator.clipboard.writeText($shortLink);
 
   function runCopyAnimation() {
@@ -66,13 +66,46 @@ async function requestCode() {
   const $qrCode = document.getElementById("qrcode");
   let inputData = window.location.href.slice(window.location.origin.length + 1);
 
+  try {
+    if (inputData && isValidHttpUrl(inputData)) {
+      const longUrlJson = JSON.stringify({ longUrl: inputData });
+      const newShortLink = await fetch(
+        "https://us-central1-shrinkninja2.cloudfunctions.net/shortenUrl ",
+        {
+          method: "POST",
+          body: longUrlJson,
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      if (newShortLink.ok) {
+        const data = await newShortLink.json();
+        if (!data.errors) {
+          $instText.style.display = "none";
+          $copyText.style.display = "block";
+          $linkText.innerText = data.shortUrl;
+          $linkText.style.display = "block";
+          createQrCode(data.shortUrl);
+          $qrCode.style.display = "block";
+          return;
+        }
+      }
+    }
+  } catch (error) {
+    console.error("Error:", error);
+  }
+
+  $instText.style.display = "block";
+
   function createQrCode(website) {
     window.qrCode = new QRious({
       element: $qrCode,
       backgroundAlpha: 0,
       foreground: window.randomColor,
       size: 300,
-      value: "https://" + website,
+      value: `https://${website}`,
     });
   }
 
@@ -84,31 +117,5 @@ async function requestCode() {
       return false;
     }
     return url.protocol === "http:" || url.protocol === "https:";
-  }
-
-  if (inputData && isValidHttpUrl(inputData)) {
-    const longUrlJson = JSON.stringify({ longUrl: inputData });
-    const newShortLink = await fetch(
-      "https://us-central1-shrinkninja2.cloudfunctions.net/shortenUrl ",
-      {
-        method: "POST",
-        body: longUrlJson,
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
-      }
-    );
-
-    const data = await newShortLink.json();
-
-    if (!data.errors) {
-      $instText.style.display = "none";
-      $copyText.style.display = "block";
-      $linkText.innerText = data.shortUrl;
-      $linkText.style.display = "block";
-      createQrCode(data.shortUrl);
-      $qrCode.style.display = "block";
-    }
   }
 }
