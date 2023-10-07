@@ -66,7 +66,7 @@ async function requestCode() {
   const $qrCode = document.getElementById("qrcode");
   const $shuriken = document.getElementById("shurikenSvg");
   let inputData = window.location.href.slice(window.location.origin.length + 1);
-  $shuriken.classList.add("loading-animation");
+  startLoadingAnimation();
 
   try {
     if (inputData && isValidHttpUrl(inputData)) {
@@ -91,7 +91,7 @@ async function requestCode() {
           $linkText.style.display = "block";
           createQrCode(data.shortUrl);
           $qrCode.style.display = "block";
-          $shuriken.classList.remove("loading-animation");
+          stopLoadingAnimation();
           return;
         }
       }
@@ -101,7 +101,7 @@ async function requestCode() {
   }
 
   $instText.style.display = "block";
-  $shuriken.classList.remove("loading-animation");
+  stopLoadingAnimation();
 
   function createQrCode(website) {
     window.qrCode = new QRious({
@@ -123,7 +123,13 @@ async function requestCode() {
     return url.protocol === "http:" || url.protocol === "https:";
   }
 
-  function startAnimation() {}
+  function startLoadingAnimation() {
+    $shuriken.classList.remove("rotates");
+    $shuriken.classList.add("loading-animation");
+  }
 
-  function stopAnimation() {}
+  function stopLoadingAnimation() {
+    $shuriken.classList.remove("loading-animation");
+    $shuriken.classList.add("rotates");
+  }
 }

@@ -48,7 +48,7 @@ body {
     height: 4em;
     width: 4em;
   }
-  #shurikenSvg:not(:active) {
+  #shurikenSvg.rotates:not(:active) {
     animation: rotate 1s;
   }
   .hyperlink:active {
