@@ -66,11 +66,6 @@ async function requestCode() {
   const $qrCode = document.getElementById("qrcode");
   let inputData = window.location.href.slice(window.location.origin.length + 1);
 
-  function checkForProtocol(str) {
-    const hasProtocol = str.match(/^[A-Za-z]+:\/\//);
-    return hasProtocol ? str : "https://" + str;
-  }
-
   function createQrCode(website) {
     window.qrCode = new QRious({
       element: $qrCode,
@@ -81,8 +76,17 @@ async function requestCode() {
     });
   }
 
-  if (inputData) {
-    inputData = checkForProtocol(inputData);
+  function isValidHttpUrl(string) {
+    let url;
+    try {
+      url = new URL(string);
+    } catch (_) {
+      return false;
+    }
+    return url.protocol === "http:" || url.protocol === "https:";
+  }
+
+  if (inputData && isValidHttpUrl(inputData)) {
     const longUrlJson = JSON.stringify({ longUrl: inputData });
     const newShortLink = await fetch(
       "https://us-central1-shrinkninja2.cloudfunctions.net/shortenUrl ",
