@@ -71,17 +71,14 @@ async function requestCode() {
   try {
     if (inputData && isValidHttpUrl(inputData)) {
       const longUrlJson = JSON.stringify({ longUrl: inputData });
-      const newShortLink = await fetch(
-        "https://us-central1-shrinkninja2.cloudfunctions.net/shortenUrl ",
-        {
-          method: "POST",
-          body: longUrlJson,
-          headers: {
-            Accept: "application/json",
-            "Content-Type": "application/json",
-          },
-        }
-      );
+      const newShortLink = await fetch("https://api.shrink.ninja", {
+        method: "POST",
+        body: longUrlJson,
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+      });
       if (newShortLink.ok) {
         const data = await newShortLink.json();
         if (!data.errors) {
