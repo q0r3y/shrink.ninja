@@ -4,7 +4,8 @@
 
 export default {
   async fetch(request) {
-    const shortCode = request.url.slice(`https://nin.sh/`.length);
+    // Regex grabs last 5 - 8 characters
+    const shortCode = request?.url.match(/\/([^\/]{5,8})$/)?.[1] ?? "";
     if (shortCode) {
       const apiRes = await fetch("https://api.shrink.ninja", {
         method: "POST",
@@ -15,9 +16,12 @@ export default {
       });
       if (apiRes.ok) {
         const apiResJson = await apiRes.json();
-        if (apiResJson.longUrl) {
-          return Response.redirect(apiResJson.longUrl);
+        if (apiResJson.LongUrl) {
+          console.log(`[+] Shortcode: ${shortCode} visited.`);
+          return Response.redirect(apiResJson.LongUrl);
         }
+      } else {
+        console.log(`[-] Bad API Response: ${apiRes}`);
       }
     }
     return Response.redirect(`https://shrink.ninja`);
