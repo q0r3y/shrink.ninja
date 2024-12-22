@@ -19,8 +19,40 @@ function transferToGithub() {
 }
 
 function setColors() {
+  let darkColor = `hsl(215deg, 42%, 5%)`;
+  let lightColor = `hsl(228deg, 47%, 98%)`;
+  if (window.matchMedia) {
+    if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
+      window.snColor = darkColor;
+      setBgColor(darkColor);
+      setTextColor(darkColor);
+      setSvgColor(darkColor);
+      if (window.qrCode) {
+        window.qrCode.set({ foreground: darkColor });
+      }
+    } else {
+      window.snColor = lightColor;
+      setBgColor(lightColor);
+      setTextColor(lightColor);
+      setSvgColor(lightColor);
+      if (window.qrCode) {
+        window.qrCode.set({ foreground: lightColor });
+      }
+    }
+  } else {
+    window.snColor = darkColor;
+    setBgColor(darkColor);
+    setTextColor(darkColor);
+    setSvgColor(darkColor);
+    if (window.qrCode) {
+      window.qrCode.set({ foreground: darkColor });
+    }
+  }
+}
+
+function setRandomColors() {
   const randomColor = getRandomColor();
-  window.randomColor = randomColor;
+  window.snColor = randomColor;
 
   setBgColor(randomColor);
   setTextColor(randomColor);
@@ -107,7 +139,7 @@ async function requestCode() {
     window.qrCode = new QRious({
       element: $qrCode,
       backgroundAlpha: 0,
-      foreground: window.randomColor,
+      foreground: window.snColor,
       size: 300,
       value: `https://${website}`,
     });
