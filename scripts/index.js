@@ -70,7 +70,7 @@ async function requestCode() {
 
   try {
     if (inputData && isValidHttpUrl(inputData)) {
-      const longUrlJson = JSON.stringify({ longUrl: inputData });
+      const longUrlJson = JSON.stringify({ LongUrl: inputData });
       const newShortLink = await fetch("https://api.shrink.ninja", {
         method: "POST",
         body: longUrlJson,
@@ -84,9 +84,9 @@ async function requestCode() {
         if (!data.errors) {
           $instText.style.display = "none";
           $copyText.style.display = "block";
-          $linkText.innerText = data.shortUrl;
+          $linkText.innerText = data.ShortUrl;
           $linkText.style.display = "block";
-          createQrCode(data.shortUrl);
+          createQrCode(data.ShortUrl);
           $qrCode.style.display = "block";
           stopLoadingAnimation();
           return;
