@@ -71,26 +71,25 @@ function setRandomColors() {
     const l = getRandomNumber(100);
     return `hsl(${h}deg, ${s}%, ${l}%)`;
   }
-
-  function setBgColor(color) {
-    const $background = document.getElementById("background");
-    $background.style.backgroundColor = color;
-    $background.style.color = color;
-  }
-
-  function setTextColor(color) {
-    const $copyText = document.getElementById("copy");
-    $copyText.style.color = color;
-  }
-
-  function setSvgColor(color) {
-    const $svgs = document.getElementsByClassName("svg");
-    for (i = 0; i < $svgs.length; i++) {
-      $svgs[i].style.fill = color;
-    }
-  }
 }
 
+function setBgColor(color) {
+  const $background = document.getElementById("background");
+  $background.style.backgroundColor = color;
+  $background.style.color = color;
+}
+
+function setTextColor(color) {
+  const $copyText = document.getElementById("copy");
+  $copyText.style.color = color;
+}
+
+function setSvgColor(color) {
+  const $svgs = document.getElementsByClassName("svg");
+  for (i = 0; i < $svgs.length; i++) {
+    $svgs[i].style.fill = color;
+  }
+}
 async function requestCode() {
   const $linkText = document.getElementById("link");
   const $copyText = document.getElementById("copy");
