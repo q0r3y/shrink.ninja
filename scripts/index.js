@@ -91,6 +91,9 @@ async function requestCode() {
           stopLoadingAnimation();
           return;
         }
+        if (data.debug) {
+          console.log(data);
+        }
       }
     }
   } catch (error) {
